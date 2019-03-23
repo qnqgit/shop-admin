@@ -1,0 +1,186 @@
+<template>
+  <el-container>
+    <!-- 头部 -->
+    <el-header>
+      <el-row class="header">
+        <!-- logo -->
+        <el-col :span="4">
+          <img src="./logo.png" alt="黑马程序员">
+        </el-col>
+        <!-- 标题 -->
+        <el-col :span="16">
+          <h2>黑马程序员--电商管理后台</h2>
+        </el-col>
+        <el-col :span="4">
+          <a href="#">
+            <i class="iconfont icon-tuichu"></i>
+            <span>退出</span>
+          </a>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-container>
+      <!-- 侧边导航栏 -->
+      <el-aside width="200px">
+        <el-menu
+          default-active="2"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+        >
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="iconfont icon-jiaoseguanli"></i>
+              <span>用户管理</span>
+            </template>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="1-1">
+                  <i class="iconfont icon-yonghu1"></i>
+                  <span>用户列表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="iconfont icon-quanxianguanli"></i>
+              <span>权限管理</span>
+            </template>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="2-1">
+                  <i class="iconfont icon-yonghu"></i>
+                  <span>角色列表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="2-2">
+                  <i class="iconfont icon-permissions-list"></i>
+                  <span>权限列表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="iconfont icon-shangpin-"></i>
+              <span>商品管理</span>
+            </template>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="3-1">
+                  <i class="iconfont icon-fenlei"></i>
+                  <span>商品列表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="3-2">
+                  <i class="iconfont icon-shangpinliebiao"></i>
+                  <span>分类参数</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="3-3">
+                  <i class="iconfont icon-shangpinfenlei"></i>
+                  <span>商品分类</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="iconfont icon-dingdan"></i>
+              <span>订单管理</span>
+            </template>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="4-1">
+                  <i class="iconfont icon-dingdanliebiao"></i>
+                  <span>订单列表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="iconfont icon-shuju1"></i>
+              <span>数据统计</span>
+            </template>
+            <el-menu-item-group>
+              <template>
+                <el-menu-item index="5-1">
+                  <i class="iconfont icon-shuju"></i>
+                  <span>数据报表</span>
+                </el-menu-item>
+              </template>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <!-- 内容区域 -->
+      <el-main>
+        <!-- 子路由的出口 -->
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
+</template>
+
+<script>
+export default {
+  name: 'Layout',
+  data () {
+    return {}
+  },
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.el-header {
+  height: 120px;
+  background-color: #ccc;
+}
+.header {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.el-aside {
+  height: 100%;
+}
+ul {
+  background-color: #545c64;
+}
+
+.el-container {
+  height: 100%;
+}
+.el-menu {
+  height: 100%;
+  background-color: #545c64;
+}
+a {
+  text-decoration: none;
+}
+i {
+  padding-right: 6px;
+}
+span {
+  font-weight: 700;
+}
+</style>
