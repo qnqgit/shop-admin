@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Home 组件</h2>
+    <h2>Home组件</h2>
   </div>
 </template>
 

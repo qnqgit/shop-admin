@@ -48,12 +48,14 @@ export default {
     },
     async login () {
       const resData = await axios.post('http://localhost:8888/api/private/v1/login', this.loginForm)
-      const { meta } = resData.data
+      const { meta, data } = resData.data
       if (meta.status === 200) {
         this.$message({
           message: '登陆成功',
           type: 'success'
         })
+
+        window.localStorage.setItem('token', data.token)
         this.$router.replace('/')
       } else {
         console.log(resData)
