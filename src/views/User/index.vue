@@ -29,25 +29,72 @@
         :data="users"
         stripe
         style="width: 100%"
+        border
+        size="small"
         v-loading="tableLoading">
         <el-table-column
         type="index">
         </el-table-column>
         <el-table-column
           prop="username"
-          label="用户名"
-          width="180">
+          label="用户名">
         </el-table-column>
         <el-table-column
           prop="email"
-          label="邮箱"
-          width="180">
+          label="邮箱">
         </el-table-column>
         <el-table-column
           prop="mobile"
           label="电话">
         </el-table-column>
+        <el-table-column label="用户状态">
+          <template slot-scope="scope">
+            <!-- 用户状态开关 -->
+            <el-switch
+              v-model="scope.row.mg_state"
+              @change="ChangeState(scope.row)"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <!-- 编辑按钮 -->
+            <el-button
+            type="primary"
+            icon="el-icon-edit"
+            circle
+            size="small"
+            @click="$refs.userFormEl.showEditDialog(scope.row)">
+            </el-button>
+            <!-- 删除按钮 -->
+            <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            size="small"
+            @click="Del(scope.row)">
+            </el-button>
+            <!-- 分类角色按钮 -->
+            <el-button
+            type="success"
+            icon="el-icon-check"
+            circle
+            size="small">
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
+
+      <!-- 分页组件 -->
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="loadUsers"
+        :page-size="5">
+      </el-pagination>
     </el-card>
 
     <!-- 添加弹框 -->
@@ -78,21 +125,28 @@
         <el-button type="primary" @click="add">确 定</el-button>
       </div>
     </el-dialog>
+
+    <UserEdit ref="userFormEl" v-on:edit-success="loadUsers"></UserEdit>
   </div>
 </template>
 
 <script>
-import { getUserList, addUser } from '@/api/user'
+import * as User from '@/api/user'
+import UserEdit from './edit'
 
 export default {
   name: 'UserList',
   async created () {
     this.loadUsers()
   },
+  components: {
+    UserEdit
+  },
   data () {
     return {
       searchText: '',
       users: [],
+      // 添加对话框是否显示
       addUserForm: false,
       addFormData: {
         username: '',
@@ -100,7 +154,7 @@ export default {
         email: '',
         mobile: ''
       },
-      tableLoading: true,
+      // 添加用户时表单验证
       addFormRules: {
         username: [
           { required: true, message: '请输入邮箱', trigger: 'blur' }
@@ -114,15 +168,17 @@ export default {
         mobile: [
           { required: true, message: '请输入电话', trigger: 'blur' }
         ]
-      }
+      },
+      total: 0
     }
   },
   methods: {
     // 加载用户列表
-    async loadUsers () {
+    async loadUsers (page = 1) {
       this.tableLoading = true
-      var { data } = await getUserList({ pagenum: 1, pagesize: 7 })
+      var { data } = await User.getUserList({ pagenum: page, pagesize: 5 })
       this.users = data.users
+      this.total = data.total
       this.tableLoading = false
     },
     // 添加用户
@@ -136,25 +192,69 @@ export default {
     },
     // 提交
     async submitAdd () {
-      const { meta } = await addUser(this.addFormData)
+      const { meta } = await User.addUser(this.addFormData)
       if (meta.status === 201) {
         this.$refs.addFormEl.resetFields() // 清空表单数据
         this.addUserForm = false // 隐藏对话框
         this.loadUsers() // 重新加载用户数据列表
       }
+    },
+    // 改变用户状态
+    async ChangeState (item) {
+      const { meta, data } = await User.changeState(item.id, item.mg_state)
+      if (meta.status === 200) {
+        this.$message({
+          type: 'success',
+          message: `${data.mg_state ? '启用' : '禁用'}用户状态成功`
+        })
+      }
+    },
+    // 编辑
+    edit () {},
+    // 删除
+    Del (item) {
+      this.$confirm('确认删除吗？', '删除提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { meta } = await User.delUser(item.id)
+        if (meta.status === 200) {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          // 重新加载用户列表
+          this.loadUsers()
+        }
+      }).catch((err) => {
+        console.log(err)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
+
 </script>
 
 <style scoped>
 .content {
   height: 100%;
 }
-.box-card {
+/* .box-card {
   height: 100%;
+} */
+.el-card {
+  overflow: visible;
 }
 .el-table {
   margin-top:10px;
+  margin-bottom: 20px;
+}
+.el-pagination {
+  margin-left: -10px;
 }
 </style>
