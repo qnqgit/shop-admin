@@ -11,7 +11,7 @@
         <span>用户管理</span>
       </template>
       <template>
-        <el-menu-item index="/user">
+        <el-menu-item index="/users">
           <i class="iconfont icon-yonghu1"></i>
           <span>用户列表</span>
         </el-menu-item>
@@ -23,13 +23,13 @@
         <span>权限管理</span>
       </template>
       <template>
-        <el-menu-item index="2-1">
+        <el-menu-item index="/roles">
           <i class="iconfont icon-yonghu"></i>
           <span>角色列表</span>
         </el-menu-item>
       </template>
       <template>
-        <el-menu-item index="2-2">
+        <el-menu-item index="/rights">
           <i class="iconfont icon-permissions-list"></i>
           <span>权限列表</span>
         </el-menu-item>
@@ -41,7 +41,7 @@
         <span>商品管理</span>
       </template>
       <template>
-        <el-menu-item index="3-1">
+        <el-menu-item index="/goods">
           <i class="iconfont icon-fenlei"></i>
           <span>商品列表</span>
         </el-menu-item>

@@ -3,12 +3,13 @@
 import request from '@/utils/request'
 
 // 获取用户列表
-export const getUserList = ({ pagenum = 1, pagesize = 7 }) => request({
+export const getUserList = ({ pagenum = 1, pagesize = 5, query = '' }) => request({
   method: 'get',
   url: '/users',
   params: {
     pagenum,
-    pagesize
+    pagesize,
+    query
   }
 }).then(res => res.data)
 
@@ -49,5 +50,14 @@ export const updateById = (id, data) => request({
   data: {
     email: data.email,
     mobile: data.mobile
+  }
+}).then(res => res.data)
+
+// 根据用户id修改用户角色
+export const updateUserRoleByUserId = (userId, roleId) => request({
+  method: 'PUT',
+  url: `/users/${userId}/role`,
+  data: { // PUT 请求体和 POST 一样
+    rid: roleId
   }
 }).then(res => res.data)

@@ -14,8 +14,21 @@
       </el-aside>
       <!-- 内容区域 -->
       <el-main>
-        <!-- 子路由的出口 -->
-        <router-view></router-view>
+        <!-- 卡片组件 -->
+        <el-card class="box-card">
+        <!-- 卡片头部 -->
+          <div slot="header" class="clearfix">
+            <!-- 面包屑组件 -->
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+              <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          <!-- 子路由的出口 -->
+          <router-view></router-view>
+
+        </el-card>
       </el-main>
     </el-container>
   </el-container>
@@ -49,5 +62,8 @@ export default {
 }
 .el-aside {
   height: 100%;
+}
+.el-card {
+  min-height: 100%;
 }
 </style>

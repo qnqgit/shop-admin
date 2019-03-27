@@ -1,104 +1,95 @@
 <template>
   <div class="content">
-    <!-- 卡片组件 -->
-    <el-card class="box-card">
-      <!-- 卡片头部 -->
-      <div slot="header" class="clearfix">
-        <!-- 面包屑组件 -->
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-          <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
-      <!-- 操作选项 -->
-      <el-row :gutter="20">
-        <el-col :span="4">
-           <el-input
-            placeholder="请输入关键字"
-            v-model="searchText">
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="success" @click="addUserForm = true">添加用户</el-button>
-        </el-col>
-      </el-row>
-      <!-- 表格组件 -->
-      <el-table
-        :data="users"
-        stripe
-        style="width: 100%"
-        border
-        size="small"
-        v-loading="tableLoading">
-        <el-table-column
-        type="index">
-        </el-table-column>
-        <el-table-column
-          prop="username"
-          label="用户名">
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          label="邮箱">
-        </el-table-column>
-        <el-table-column
-          prop="mobile"
-          label="电话">
-        </el-table-column>
-        <el-table-column label="用户状态">
-          <template slot-scope="scope">
-            <!-- 用户状态开关 -->
-            <el-switch
-              v-model="scope.row.mg_state"
-              @change="ChangeState(scope.row)"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <!-- 编辑按钮 -->
-            <el-button
-            type="primary"
-            icon="el-icon-edit"
-            circle
-            size="small"
-            @click="$refs.userFormEl.showEditDialog(scope.row)">
-            </el-button>
-            <!-- 删除按钮 -->
-            <el-button
-            type="danger"
-            icon="el-icon-delete"
-            circle
-            size="small"
-            @click="Del(scope.row)">
-            </el-button>
-            <!-- 分类角色按钮 -->
-            <el-button
-            type="success"
-            icon="el-icon-check"
-            circle
-            size="small">
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+    <!-- 操作选项 -->
+    <el-row :gutter="20">
+      <el-col :span="4">
+          <el-input
+          placeholder="请输入关键字"
+          v-model="searchText"
+            @keyup.enter.native="loadUsers(1)">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+      </el-col>
+      <el-col :span="4">
+        <el-button type="success" @click="addUserForm = true">添加用户</el-button>
+      </el-col>
+    </el-row>
+    <!-- 表格组件 -->
+    <el-table
+      :data="users"
+      stripe
+      style="width: 100%"
+      border
+      size="small"
+      v-loading="tableLoading">
+      <el-table-column
+      type="index">
+      </el-table-column>
+      <el-table-column
+        prop="username"
+        label="用户名">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        label="邮箱">
+      </el-table-column>
+      <el-table-column
+        prop="mobile"
+        label="电话">
+      </el-table-column>
+      <el-table-column label="用户状态">
+        <template slot-scope="scope">
+          <!-- 用户状态开关 -->
+          <el-switch
+            v-model="scope.row.mg_state"
+            @change="ChangeState(scope.row)"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <!-- 编辑按钮 -->
+          <el-button
+          type="primary"
+          icon="el-icon-edit"
+          circle
+          size="small"
+          @click="$refs.userFormEl.showEditDialog(scope.row)">
+          </el-button>
+          <!-- 删除按钮 -->
+          <el-button
+          type="danger"
+          icon="el-icon-delete"
+          circle
+          size="small"
+          @click="Del(scope.row)">
+          </el-button>
+          <!-- 分类角色按钮 -->
+          <el-button
+          type="success"
+          icon="el-icon-check"
+          circle
+          size="small"
+          @click="$refs.userEditRoleEl.showEditRoleDialog(scope.row)">
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-      <!-- 分页组件 -->
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        @current-change="loadUsers"
-        :page-size="5">
-      </el-pagination>
-    </el-card>
+    <!-- 分页组件 -->
+    <el-pagination
+      @size-change="loadUsers"
+      @current-change="loadUsers"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="5"
+      :pager-count="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
 
     <!-- 添加弹框 -->
-
     <el-dialog title="添加用户"
     :visible.sync="addUserForm"
     width="40%" align="center">
@@ -126,13 +117,17 @@
       </div>
     </el-dialog>
 
+    <!-- 用户编辑 -->
     <UserEdit ref="userFormEl" v-on:edit-success="loadUsers"></UserEdit>
+    <!-- 用户角色分配 -->
+    <UserEditRole ref="userEditRoleEl"></UserEditRole>
   </div>
 </template>
 
 <script>
 import * as User from '@/api/user'
 import UserEdit from './edit'
+import UserEditRole from './edit-role'
 
 export default {
   name: 'UserList',
@@ -140,7 +135,8 @@ export default {
     this.loadUsers()
   },
   components: {
-    UserEdit
+    UserEdit,
+    UserEditRole
   },
   data () {
     return {
@@ -176,7 +172,7 @@ export default {
     // 加载用户列表
     async loadUsers (page = 1) {
       this.tableLoading = true
-      var { data } = await User.getUserList({ pagenum: page, pagesize: 5 })
+      var { data } = await User.getUserList({ pagenum: page, pagesize: 5, query: this.searchText })
       this.users = data.users
       this.total = data.total
       this.tableLoading = false

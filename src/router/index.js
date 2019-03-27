@@ -4,6 +4,9 @@ import Login from '@/views/Login'
 import Layout from '@/views/Layout'
 import Home from '@/views/Home'
 import UserList from '@/views/User'
+import RightList from '@/views/Rights'
+import RoleList from '@/views/Roles'
+import GoodsList from '@/views/Goods'
 
 Vue.use(Router)
 
@@ -15,7 +18,10 @@ const router = new Router({
       component: Layout,
       children: [
         { path: '', component: Home },
-        { path: '/user', component: UserList }
+        { path: '/users', component: UserList },
+        { path: '/rights', component: RightList },
+        { path: '/roles', component: RoleList },
+        { path: '/goods', component: GoodsList }
       ]
     }
   ]
