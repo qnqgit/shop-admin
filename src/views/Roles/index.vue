@@ -51,13 +51,17 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
+            icon="el-icon-edit"
             @click="$refs.roleEditEl.showDialog(scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
+            icon="el-icon-delete"
             @click="Del(scope.row)">删除</el-button>
             <el-button
             type="success"
+            icon="el-icon-check"
             size="mini" @click="showEditRights(scope.row)">分配角色</el-button>
         </template>
       </el-table-column>
@@ -67,7 +71,7 @@
     <!-- 编辑角色 -->
     <RoleEdit ref="roleEditEl" @edit-success="loadRoles"></RoleEdit>
     <!-- 角色授权 -->
-    <EditRight ref="roleEditRightsEl"></EditRight>
+    <EditRight ref="roleEditRightsEl" @edit-right-success="loadRoles"></EditRight>
   </div>
 </template>
 
@@ -103,7 +107,7 @@ export default {
     },
     // 删除角色
     Del (item) {
-      this.$confirm('确认先出吗？', '删除提示', {
+      this.$confirm('确认删除吗？', '删除提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -124,6 +128,7 @@ export default {
         })
       })
     },
+    // 显示编辑权限弹框
     showEditRights (item) {
       this.$refs.roleEditRightsEl.showDialog(item)
     }
@@ -132,9 +137,6 @@ export default {
 </script>
 
 <style scoped>
-.el-table {
-  margin-top: 15px;
-}
 .first {
   margin-bottom: 10px;
 }

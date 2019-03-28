@@ -3,10 +3,12 @@
 import request from '@/utils/request'
 
 // 获取商品列表
-export const getGoodsList = (type) => request({
+export const getGoodsList = ({ query = '', pagenum = 1, pagesize = 20 }) => request({
   method: 'get',
-  url: 'categories/',
-  data: {
-    type: ['cat_id', 'cat_name', 'cat_pid', 'cat_level']
+  url: 'goods',
+  params: {
+    query,
+    pagenum,
+    pagesize
   }
 }).then(res => res.data)

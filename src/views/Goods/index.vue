@@ -1,50 +1,94 @@
 <template>
   <div>
+    <!-- 搜索、添加操作 -->
+    <el-row :gutter="20">
+      <el-col :span="4">
+          <el-input
+          placeholder="请输入关键字"
+          v-model="searchText"
+            @keyup.enter.native="loadGoods(1)">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+      </el-col>
+      <el-col :span="4">
+        <el-button type="success" @click="addUserForm = true">添加商品</el-button>
+      </el-col>
+    </el-row>
     <el-table
-      :data="tableData"
+      :data="goods"
       stripe
       border
       style="width: 100%">
+      <el-table-column type="index" label="编号" width="80">
+      </el-table-column>
       <el-table-column
-        prop="date"
-        label="日期"
+        prop="goods_name"
+        label="商品名称"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
+        prop="goods_price"
+        label="商品价格"
+        width="120">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址">
+        prop="goods_state"
+        label="商品状态"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="goods_number"
+        label="商品数量"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="add_time"
+        label="创建时间"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        label="操作">
+        <template>
+          <el-button type="info" size="mini" icon="el-icon-edit">编辑</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      @size-change="loadGoods"
+      @current-change="loadGoods"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="5"
+      :pager-count="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="goodsTotal">
+    </el-pagination>
   </div>
 </template>
 
 <script>
+import { getGoodsList } from '@/api/goods'
 export default {
   name: 'GoodsList',
   data () {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      goods: [],
+      searchText: '',
+      goodsToTal: 0
+    }
+  },
+  created () {
+    this.loadGoods(1)
+  },
+  methods: {
+    async loadGoods (page = 1) {
+      const { data, meta } = await getGoodsList({ pagenum: page, query: this.searchText })
+      if (meta.status === 200) {
+        this.goods = data.goods
+        this.goodsTotal = data.total
+      }
     }
   }
 }

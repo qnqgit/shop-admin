@@ -42,6 +42,10 @@ export const editRole = (id, data) => request({
 }).then(res => res.data)
 
 // 根据id修改角色
-// export const updateRoleById = () => request({
-//   method: ''
-// })
+export const updateRightsByRoleId = (roleId, rids) => request({
+  method: 'post',
+  url: `roles/${roleId}/rights`,
+  data: {
+    rids
+  }
+}).then(res => res.data)

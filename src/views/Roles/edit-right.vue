@@ -7,6 +7,7 @@
       node-key="id"
       default-expand-all
       :default-checked-keys="defaultChecked"
+      ref="tree"
       :props="defaultProps">
     </el-tree>
     <div slot="footer" class="dialog-footer">
@@ -18,6 +19,8 @@
 
 <script>
 import { getRightsList } from '@/api/right'
+import { updateRightsByRoleId } from '@/api/role'
+
 export default {
   name: 'EditRight',
   data () {
@@ -34,8 +37,12 @@ export default {
   methods: {
     // 显示角色授权框
     showDialog (role) {
+      this.role = role
       this.RoleRightVisible = true
       this.loadRights()
+
+      // 让角色的拥有的权限，在树形中被选中
+      this.getRights(role.children)
     },
 
     // 加载所有权限列表
@@ -58,6 +65,18 @@ export default {
     // 提交角色授权
     async handleSubmit () {
       // 获取菜单树中用户选中的节点id
+      const tree = this.$refs.tree
+      const rids = [...tree.getCheckedKeys(), ...tree.getHalfCheckedKeys()].join(',')
+      const { meta } = await updateRightsByRoleId(this.role.id, rids)
+      if (meta.status === 200) {
+        this.$emit('edit-right-success')
+        // 对话框隐藏
+        this.RoleRightVisible = false
+        this.$message({
+          message: '角色授权成功',
+          type: 'success'
+        })
+      }
       // 提交给服务器
     }
   }
