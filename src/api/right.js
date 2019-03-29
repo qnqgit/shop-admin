@@ -5,3 +5,9 @@ export const getRightsList = type => request({
   method: 'get',
   url: `rights/${type}`
 }).then(res => res.data)
+
+// 获取当前登录用户的权限
+export const getRightsMenu = () => request({
+  method: 'get',
+  url: 'menus'
+}).then(res => res.data)

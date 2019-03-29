@@ -5,20 +5,24 @@
     stripe
     border
     style="width: 100%">
-    <el-table-column type="index">
+    <el-table-column type="index" align="center" label="序号" width="80">
     </el-table-column>
     <el-table-column
       prop="authName"
       label="权限名称"
-      width="180">
+      width="180"
+      align="center">
     </el-table-column>
     <el-table-column
       prop="path"
       label="路径"
-      width="180">
+      width="180"
+      align="center">
     </el-table-column>
     <el-table-column
-      label="层级">
+      label="层级"
+      align="center"
+      width="180">
       <template slot-scope="scope">
         {{ ['一级', '二级', '三级'][scope.row.level] }}
       </template>

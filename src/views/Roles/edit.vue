@@ -1,16 +1,20 @@
 <template>
   <el-dialog title="编辑角色" :visible.sync="editRoleForm" align="center">
-    <el-form :model="RoleFormData">
-      <el-form-item label="角色名称" label-width="80px">
+    <el-form
+    :model="RoleFormData"
+    size="mini"
+    :rules="editFormRole"
+    ref="editFormEl">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="RoleFormData.roleName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="角色描述" label-width="80px">
+      <el-form-item label="角色描述" prop="roleDesc">
         <el-input v-model="RoleFormData.roleDesc" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="editRoleForm = false">取 消</el-button>
-      <el-button type="primary" @click.prevent="submitEdit">确 定</el-button>
+      <el-button type="primary" @click.prevent="edit">确 定</el-button>
     </div>
 </el-dialog>
 </template>
@@ -25,6 +29,15 @@ export default {
       RoleFormData: {
         roleName: '',
         roleDesc: ''
+      },
+      // 编辑角色--表单验证
+      editFormRole: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -38,6 +51,14 @@ export default {
       }
     },
     // 编辑
+    edit () {
+      this.$refs.editFormEl.validate(valid => {
+        if (!valid) { // 验证失败，什么都不做
+          return
+        }
+        this.submitedit() // 验证通过，提交表单
+      })
+    },
     // 提交编辑
     async submitEdit () {
       const { roleId, roleName, roleDesc } = this.RoleFormData

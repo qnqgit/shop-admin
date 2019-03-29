@@ -27,17 +27,21 @@
       </el-table-column>
       <el-table-column
         prop="username"
-        label="用户名">
+        label="用户名"
+        width="140"
+        align="center">
       </el-table-column>
       <el-table-column
         prop="email"
-        label="邮箱">
+        label="邮箱"
+        align="center">
       </el-table-column>
       <el-table-column
         prop="mobile"
-        label="电话">
+        label="电话"
+        align="center">
       </el-table-column>
-      <el-table-column label="用户状态">
+      <el-table-column label="用户状态" width="100" align="center">
         <template slot-scope="scope">
           <!-- 用户状态开关 -->
           <el-switch
@@ -48,7 +52,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <!-- 编辑按钮 -->
           <el-button

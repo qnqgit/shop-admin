@@ -6,10 +6,10 @@
     </el-col>
     <!-- 标题 -->
     <el-col :span="16">
-      <h2>品优购电商后台管理系统</h2>
+      <h2 >品优购电商后台管理系统</h2>
     </el-col>
     <el-col :span="4">
-      <el-button type="primary" @click="logout" size="small">
+      <el-button type="info" @click="logout" size="small">
         <i class="iconfont icon-tuichu"></i>
         <span>退出</span>
       </el-button>

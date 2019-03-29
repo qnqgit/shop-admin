@@ -7,6 +7,7 @@ import UserList from '@/views/User'
 import RightList from '@/views/Rights'
 import RoleList from '@/views/Roles'
 import GoodsList from '@/views/Goods'
+import GoodsAdd from '@/views/Goods/add'
 
 Vue.use(Router)
 
@@ -21,7 +22,8 @@ const router = new Router({
         { path: '/users', component: UserList },
         { path: '/rights', component: RightList },
         { path: '/roles', component: RoleList },
-        { path: '/goods', component: GoodsList }
+        { path: '/goods', component: GoodsList },
+        { path: '/toadd', component: GoodsAdd }
       ]
     }
   ]

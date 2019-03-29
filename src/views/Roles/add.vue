@@ -1,16 +1,20 @@
 <template>
   <el-dialog title="添加角色" :visible.sync="addRoleForm" align="center">
-    <el-form :model="RoleFormData">
-      <el-form-item label="角色名称" label-width="80px">
+    <el-form
+    :model="RoleFormData"
+    :rules="addFormRole"
+    ref="addFormEl"
+    size="mini">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="RoleFormData.roleName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="角色描述" label-width="80px">
+      <el-form-item label="角色描述" prop="roleDesc">
         <el-input v-model="RoleFormData.roleDesc" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="addRoleForm = false">取 消</el-button>
-      <el-button type="primary" @click.prevent="submitAddRole">确 定</el-button>
+      <el-button type="primary" @click.prevent="add">确 定</el-button>
     </div>
 </el-dialog>
 </template>
@@ -25,6 +29,15 @@ export default {
       RoleFormData: {
         roleName: '',
         roleDesc: ''
+      },
+      // 添加角色时表单验证
+      addFormRole: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -32,6 +45,15 @@ export default {
     // 显示添加角色弹框
     showDialog () {
       this.addRoleForm = true
+    },
+    // 添加用户
+    add () {
+      this.$refs.addFormEl.validate(valid => {
+        if (!valid) { // 验证失败，什么都不做
+          return
+        }
+        this.submitAddRole() // 验证通过，提交表单
+      })
     },
 
     // 添加

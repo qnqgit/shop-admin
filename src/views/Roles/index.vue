@@ -10,7 +10,7 @@
       stripe
       border
       style="width: 100%">
-      <el-table-column type="expand">
+      <el-table-column type="expand" align="center">
         <template slot-scope="scope">
           <el-row class="first" v-for="first in scope.row.children" :key="first.id">
             <!-- 一级 -->
@@ -35,33 +35,38 @@
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column type="index">
+      <el-table-column type="index" label="序号" width="80" align="center">
       </el-table-column>
       <el-table-column
         prop="roleName"
         label="角色名称"
-        width="180">
+        width="220"
+        align="center">
       </el-table-column>
       <el-table-column
         prop="roleDesc"
         label="描述"
-        width="180">
+        width="220"
+        align="center">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
             icon="el-icon-edit"
+            align="center"
             @click="$refs.roleEditEl.showDialog(scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
             icon="el-icon-delete"
+            align="center"
             @click="Del(scope.row)">删除</el-button>
             <el-button
             type="success"
             icon="el-icon-check"
+            align="center"
             size="mini" @click="showEditRights(scope.row)">分配角色</el-button>
         </template>
       </el-table-column>

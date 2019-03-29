@@ -4,20 +4,30 @@
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
-    :router="true">
-    <el-submenu index="1">
+    :router="true"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b">
+    <el-submenu
+      v-for="first in menus"
+      :index="first.id"
+      :key="first.id">
       <template slot="title">
         <i class="iconfont icon-jiaoseguanli"></i>
-        <span>用户管理</span>
+        <span>{{ first.authName }}</span>
       </template>
-      <template>
-        <el-menu-item index="/users">
-          <i class="iconfont icon-yonghu1"></i>
-          <span>用户列表</span>
+        <el-menu-item
+          v-for="second in first.children"
+          :key="second.id"
+          :index="`/${second.path}`">
+          <template solt="title">
+            <i class="iconfont icon-yonghu1"></i>
+            <span>{{ second.authName }}</span>
+          </template>
         </el-menu-item>
-      </template>
+
     </el-submenu>
-    <el-submenu index="2">
+    <!-- <el-submenu index="2">
       <template slot="title">
         <i class="iconfont icon-quanxianguanli"></i>
         <span>权限管理</span>
@@ -82,15 +92,21 @@
           <span>数据报表</span>
         </el-menu-item>
       </template>
-    </el-submenu>
+    </el-submenu> -->
   </el-menu>
 </template>
 
 <script>
+import { getRightsMenu } from '@/api/right'
 export default {
   name: 'NavMenu',
   data () {
-    return {}
+    return {
+      menus: []
+    }
+  },
+  created () {
+    this.loadRightsMenu()
   },
   methods: {
     handleOpen (key, keyPath) {
@@ -98,18 +114,21 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    // 加载左侧菜单列表权限
+    async loadRightsMenu () {
+      const { data, meta } = await getRightsMenu()
+      if (meta.status === 200) {
+        this.menus = data
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-ul {
-  background-color: #545c64;
-}
 .el-menu {
   height: 100%;
-  background-color: #545c64;
 }
 a {
   text-decoration: none;
