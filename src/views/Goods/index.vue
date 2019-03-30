@@ -91,7 +91,8 @@ export default {
     return {
       goods: [],
       searchText: '',
-      goodsToTal: 0
+      goodsTotal: 0,
+      page: 1
     }
   },
   created () {

@@ -10,7 +10,7 @@
     active-text-color="#ffd04b">
     <el-submenu
       v-for="first in menus"
-      :index="first.id"
+      :index="first.path"
       :key="first.id">
       <template slot="title">
         <i class="iconfont icon-jiaoseguanli"></i>
@@ -25,7 +25,6 @@
             <span>{{ second.authName }}</span>
           </template>
         </el-menu-item>
-
     </el-submenu>
     <!-- <el-submenu index="2">
       <template slot="title">
